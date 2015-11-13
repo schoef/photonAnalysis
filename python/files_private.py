@@ -46,5 +46,5 @@ MG_hep=[
 ]
 
 P8_hep=[
-'/scratch/skulkarni/monophoton_backgrounds/pythia8_pp_gammaj/DATA_pp-gammaj_8TeV/BSMHiggs_hep_to_root.root'
+'/scratch/skulkarni/monophoton_backgrounds/pythia8_pp_gammaj_high_statistics/pp-gammajet/BSMHiggs_hep_to_root.root'
 ]
