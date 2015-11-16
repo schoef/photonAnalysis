@@ -13,7 +13,7 @@ gJets = getChain(GJets, histname="")
 
 stuff=[]
 for name, varP, varC, binning in [
-  ('MET', "MissingET.MET",'met_pt*(Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22 ))>100)',  [100,0,300]),
+  ('MET', "MissingET.MET",'met_pt',  [100,100,500]),
 #  ('ptGamma', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))", 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22 ))', [100,100,300]),
 #  ('SumPt', "Sum$(Particle.PT*(Particle.Status==1))", 'met_sumEt', [100,0,3000]),
 
