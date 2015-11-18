@@ -1,6 +1,6 @@
 import ROOT
 from photonAnalysis.metComparison.files_private import *
-from photonAnalysis.metComparison.files_cms import *
+#from photonAnalysis.metComparison.files_cms import *
 mg_delphes_atlas = ROOT.TChain("Delphes")
 for f in MG_delphes_atlas:
   mg_delphes_atlas.Add(f)

@@ -2,7 +2,6 @@
 #P8_delphes_cms = ['/scratch/skulkarni/monophoton_backgrounds/pythia8_pp_gammaj_high_statistics/pp-gammajet/delphised_cms.root']
 P8_delphes_atlas=['/scratch/skulkarni/monophoton_backgrounds/pythia8_pp_gammaj_high_statistics/delphised_atlas_new_card.root']
 P8_delphes_cms = ['/scratch/skulkarni/monophoton_backgrounds/pythia8_pp_gammaj_high_statistics/delphised_cms_new_card.root']
- /scratch/skulkarni/monophoton_backgrounds/MadGraph5_v1_5_14/Gamma_jet_pythia_cross_checks/Events/run_01
 #MG_delphes_atlas=[
 #'/scratch/skulkarni/monophoton_backgrounds/MadGraph5_v1_5_14/Gamma_jet_pythia_cross_checks/Events/run_01/delphised_atlas.root',
 #'/scratch/skulkarni/monophoton_backgrounds/MadGraph5_v1_5_14/Gamma_jet_pythia_cross_checks/Events/run_02/delphised_atlas.root',

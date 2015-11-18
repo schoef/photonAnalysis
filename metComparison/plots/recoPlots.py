@@ -7,20 +7,23 @@ from StopsDilepton.samples.cmgTuples_Spring15_mAODv2_25ns_0l_postProcessed impor
 from samples import *
 from formulas import *
 
-mg_delphes_atlas.Draw(hep_sumPt+":"+delphes_sumPtFormula(),"","COLZ")
+#mg_delphes_atlas.Draw(hep_sumPt+":"+delphes_sumPtFormula(),"","COLZ")
 
 gJets = getChain(GJets, histname="")
 
 stuff=[]
-for name, varP, varC, binning in [
-  ('MET', "MissingET.MET",'met_pt',  [100,100,500]),
-#  ('ptGamma', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))", 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22 ))', [100,100,300]),
+for name, varP, cutP, varC,cutC, binning in [
+#  ('MET_Inclusive', "MissingET.MET",'(1)', 'met_pt', '(1)',  [45,0,450]),
+#  ('MET_GenPhoton80', "MissingET.MET",'(1)', 'met_pt', '(Sum$(genPartAll_pt>80&&genPartAll_pdgId==22)>=1)',  [45,0,450]),
+#  ('MET_GenPhoton145', "MissingET.MET",'(1)', 'met_pt', '(Sum$(genPartAll_pt>145&&genPartAll_pdgId==22)>=1)',  [45,0,450]),
+#  ('MET', "Max$(MissingET.MET)",'Max$(Particle.PT*(Particle.PID==22))>100', 'met_pt', 'Jet_pt[0]>100&&Max$(genPartAll_pt*(genPartAll_pdgId==22))>100',  [100,100,500]),
+  ('ptGenGamma', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))","(1)", 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22 ))',"(1)", [50,0,300]),
 #  ('SumPt', "Sum$(Particle.PT*(Particle.Status==1))", 'met_sumEt', [100,0,3000]),
 
   ]:
-  h_c =getPlotFromChain(gJets, varC, binning,"1",weight="weight")
-  h_mg=getPlotFromChain(mg_delphes_atlas, varP, binning,"1","1")
-  h_p8=getPlotFromChain(p8_delphes_atlas, varP, binning,"1","1")
+  h_c =getPlotFromChain(gJets, varC, binning, cutC,weight="weight")
+  h_mg=getPlotFromChain(mg_delphes_cms, varP, binning,cutP,weight="(1)")
+  h_p8=getPlotFromChain(p8_delphes_cms, varP, binning,cutP,weight="(1)")
   h_p8.SetLineColor(ROOT.kRed)
   h_c.SetLineColor(ROOT.kBlue)
   h_p8.SetMarkerColor(ROOT.kRed)
@@ -41,13 +44,13 @@ for name, varP, varC, binning in [
   l.AddEntry(h_mg, "Madgraph")
   l.AddEntry(h_p8, "Pythia8")
   stuff.append(l)
-  h_c.GetXaxis().SetTitle(name)
-  h_c.Draw()
-  h_mg.Scale(h_c.Integral()/h_mg.Integral())
-  h_mg.Draw('same')
+  h_mg.Scale(770*1000./float(mg_delphes_cms.GetEntries()))
+  h_mg.GetXaxis().SetTitle(name)
   c1.SetLogy()
-  h_p8.Scale(h_c.Integral()/h_p8.Integral())
-  h_p8.Draw("same")
+  h_p8.Scale(770*1000./float(p8_delphes_cms.GetEntries()))
+  h_c.Draw("hist")
+  h_mg.Draw('histsame')
+  h_p8.Draw("histsame")
   l.Draw()
 
   c1.Print("/afs/hephy.at/user/r/rschoefbeck/www/photonAna/reco_"+name+".png")
