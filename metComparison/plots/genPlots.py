@@ -8,9 +8,9 @@ mg_hep = ROOT.TChain("Delphes")
 for f in MG_hep:
   mg_hep.Add(f)
 
-p8_hep = ROOT.TChain("Delphes")
-for f in P8_hep:
-  p8_hep.Add(f)
+#p8_hep = ROOT.TChain("Delphes")
+#for f in P8_hep:
+#  p8_hep.Add(f)
 
 from StopsDilepton.tools.helpers import getChain, getObjDict, getEList, getVarValue, getPlotFromChain
 from StopsDilepton.samples.cmgTuples_Spring15_mAODv2_25ns_0l_postProcessed import GJets
@@ -18,9 +18,9 @@ gJets = getChain(GJets, histname="")
 
 stuff=[]
 for name, varP, varC, binning in [
-  ('MEx', "Sum$(Particle.Px*(Particle.Status==1))", 'met_genPt*cos(met_genPhi)',  [100,-1,1]),
-  ('ptGamma', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))", 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22 ))', [100,100,300]),
-  ('SumPt', "Sum$(Particle.PT*(Particle.Status==1))", 'met_sumEt', [100,0,3000]),
+#  ('MEx', "Sum$(Particle.Px*(Particle.Status==1))", 'met_genPt*cos(met_genPhi)',  [100,-1,1]),
+  ('ptGamma', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))", 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22 ))', [100,0,500]),
+#  ('SumPt', "Sum$(Particle.PT*(Particle.Status==1))", 'met_sumEt', [100,0,3000]),
 
   ]:
   h_c =getPlotFromChain(gJets, varC, binning,"1",weight="weight")

@@ -16,23 +16,30 @@ for name, varP, cutP, varC,cutC, binning in [
 #  ('MET_Inclusive', "MissingET.MET",'(1)', 'met_pt', '(1)',  [45,0,450]),
 #  ('MET_GenPhoton80', "MissingET.MET",'(1)', 'met_pt', '(Sum$(genPartAll_pt>80&&genPartAll_pdgId==22)>=1)',  [45,0,450]),
 #  ('MET_GenPhoton145', "MissingET.MET",'(1)', 'met_pt', '(Sum$(genPartAll_pt>145&&genPartAll_pdgId==22)>=1)',  [45,0,450]),
-#  ('MET', "Max$(MissingET.MET)",'Max$(Particle.PT*(Particle.PID==22))>100', 'met_pt', 'Jet_pt[0]>100&&Max$(genPartAll_pt*(genPartAll_pdgId==22))>100',  [100,100,500]),
-  ('ptGenGamma', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))","(1)", 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22 ))',"(1)", [50,0,300]),
+
+#  ('ptGenGamma_compMET', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))",'Max$(Particle.PT*(Particle.Status==1&&Particle.PID==22))>50', 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22&&genPartAll_status==1 ))', 'Max$(genPartAll_pt*(genPartAll_pdgId==22&&genPartAll_status==1))>50',  [50,0,300]),
+#  ('ptGenGamma', "Max$(Particle.PT*(Particle.Status==1&&abs(Particle.PID)==22))","(1)", 'Max$(genPartAll_pt*( abs(genPartAll_pdgId)==22&&genPartAll_status==1 ))',"(1)", [50,0,300]),
+#  ('HT', "Sum$(JetMA5.PT*(JetMA5.PT>30))",'Max$(Particle.PT*(Particle.Status==1&&Particle.PID==22))>50', 'Sum$(Jet_pt*(Jet_pt>30))', 'Max$(genPartAll_pt*(genPartAll_pdgId==22&&genPartAll_status==1))>50',  [50,0,1000]),
+#  ('MET', "Max$(MissingET.MET)",'Max$(Particle.PT*(Particle.Status==1&&Particle.PID==22))>50', 'met_pt', 'Max$(genPartAll_pt*(genPartAll_pdgId==22&&genPartAll_status==1))>50',  [100,0,500]),
+  ('Jet0Pt', "Max$(JetMA5.PT*(JetMA5.PT>30))",'Max$(Particle.PT*(Particle.Status==1&&Particle.PID==22))>50', 'Max$(Jet_pt*(Jet_pt>30))', 'Max$(genPartAll_pt*(genPartAll_pdgId==22&&genPartAll_status==1))>50',  [50,0,1000]),
+
 #  ('SumPt', "Sum$(Particle.PT*(Particle.Status==1))", 'met_sumEt', [100,0,3000]),
 
   ]:
   h_c =getPlotFromChain(gJets, varC, binning, cutC,weight="weight")
-  h_mg=getPlotFromChain(mg_delphes_cms, varP, binning,cutP,weight="(1)")
-  h_p8=getPlotFromChain(p8_delphes_cms, varP, binning,cutP,weight="(1)")
-  h_p8.SetLineColor(ROOT.kRed)
+  h_mg=getPlotFromChain(mg_delphes_cms_13TeV, varP, binning,cutP,weight="(1)")
+#  h_p8=getPlotFromChain(p8_delphes_cms, varP, binning,cutP,weight="(1)")
+#  h_mg=getPlotFromChain(mg_hep_13TeV, varP, binning,cutP,weight="(1)")
+#  h_p8=getPlotFromChain(p8_hep, varP, binning,cutP,weight="(1)")
+#  h_p8.SetLineColor(ROOT.kRed)
   h_c.SetLineColor(ROOT.kBlue)
-  h_p8.SetMarkerColor(ROOT.kRed)
+#  h_p8.SetMarkerColor(ROOT.kRed)
   h_mg.SetMarkerColor(ROOT.kBlack)
   h_c .SetMarkerColor(ROOT.kBlue)
-  h_p8.SetMarkerSize(0)
+#  h_p8.SetMarkerSize(0)
   h_mg.SetMarkerSize(0)
   h_c .SetMarkerSize(0)
-  h_p8.SetMarkerStyle(0)
+#  h_p8.SetMarkerStyle(0)
   h_mg.SetMarkerStyle(0)
   h_c .SetMarkerStyle(0)
   c1 = ROOT.TCanvas()
@@ -40,20 +47,21 @@ for name, varP, cutP, varC,cutC, binning in [
   l.SetFillColor(0)
   l.SetShadowColor(ROOT.kWhite)
   l.SetBorderSize(1)
-  l.AddEntry(h_c, "CMS")
-  l.AddEntry(h_mg, "Madgraph")
-  l.AddEntry(h_p8, "Pythia8")
+  l.AddEntry(h_c, "CMS, 13TeV")
+  l.AddEntry(h_mg, "Madgraph, 13 TeV")
+#  l.AddEntry(h_p8, "Pythia8, 8TeV, 770.pb")
   stuff.append(l)
-  h_mg.Scale(770*1000./float(mg_delphes_cms.GetEntries()))
+  print "Scaling MG", 8.489e+05*1000./float(mg_hep_13TeV.GetEntries())
+  h_mg.Scale(8.489e+05*1000./float(mg_hep_13TeV.GetEntries()))
   h_mg.GetXaxis().SetTitle(name)
   c1.SetLogy()
-  h_p8.Scale(770*1000./float(p8_delphes_cms.GetEntries()))
+#  print "Scaling P8",770*1000./float(p8_hep.GetEntries())
+#  h_p8.Scale(770*1000./float(p8_hep.GetEntries()))
   h_c.Draw("hist")
   h_mg.Draw('histsame')
-  h_p8.Draw("histsame")
   l.Draw()
 
-  c1.Print("/afs/hephy.at/user/r/rschoefbeck/www/photonAna/reco_"+name+".png")
+  c1.Print("/afs/hephy.at/user/r/rschoefbeck/www/photonAna/15-12-12_reco_"+name+".png")
 
 #mg_delphes_atlas.Draw("Sum$(Particle.Px*(Particle.Status==1))","")
 #p8_delphes_atlas.Draw("Sum$(Particle.Px*(Particle.Status==1))","","same")
